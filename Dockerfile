@@ -1,0 +1,28 @@
+# Dockerfile
+FROM debian:jessie
+
+ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    curl \
+    devscripts \
+    equivs \
+    git-buildpackage \
+    git \
+    lsb-release \
+    make \
+    openssh-client \
+    pristine-tar \
+    rake \
+    rsync \
+    ruby \
+    ruby-dev \
+    rubygems \
+    wget \
+    && apt-get clean
+
+RUN echo "gem: --no-ri --no-rdoc" > /etc/gemrc
+RUN gem install fpm -v 1.6.2
+RUN gem install fpm-cookery -v 0.32.0
+RUN gem install buildtasks -v 0.0.2
+RUN gem install bundler -v 1.12.5
