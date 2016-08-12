@@ -4,6 +4,8 @@ services:
   joki:
     build: .
     working_dir: /build/recipes/joki
+    environment:
+      - "GOPATH=/build/recipes/joki"
     command: fpm-cook
     volumes:
       - .:/build
