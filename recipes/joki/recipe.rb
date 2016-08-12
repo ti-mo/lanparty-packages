@@ -12,13 +12,12 @@ class Joki < FPM::Cookery::Recipe
 
   provides 'joki'
 
-  source 'gogs@git.incline.eu:timo/joki.git'
+  source 'http://git.incline.eu/timo/joki.git',
     :with    => 'git',
     :branch  => 'master'
 
   def build
-    configure :prefix => prefix
-    make
+    sh "go get"
   end
 
   def install

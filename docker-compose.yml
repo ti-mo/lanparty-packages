@@ -3,8 +3,8 @@ version: '2'
 services:
   joki:
     build: .
-    working_dir: /build/joki
+    working_dir: /build/recipes/joki
     command: fpm-cook
     volumes:
-      - "./build:/build"
-      - "./pkg:/pkg"
+      - .:/build
+      - ./pkg:/pkg
