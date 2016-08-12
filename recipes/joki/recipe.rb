@@ -12,9 +12,7 @@ class Joki < FPM::Cookery::Recipe
 
   provides 'joki'
 
-  source 'http://git.incline.eu/timo/joki.git',
-    :with    => 'git',
-    :branch  => 'master'
+  source 'http://git.incline.eu/timo/joki.git', :with => 'git', :branch => 'master'
 
   def build
     sh "go get"

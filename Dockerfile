@@ -19,6 +19,7 @@ RUN apt-get update && apt-get install -y \
     ruby-dev \
     rubygems \
     wget \
+    golang \
     && apt-get clean
 
 RUN echo "gem: --no-ri --no-rdoc" > /etc/gemrc
