@@ -2,7 +2,9 @@
 FROM debian:jessie
 
 ENV DEBIAN_FRONTEND noninteractive
-RUN apt-get update && apt-get install -y \
+RUN echo "deb http://httpredir.debian.org/debian jessie-backports main" >> /etc/apt/sources.list
+
+RUN apt-get update && apt-get -t jessie-backports install -y \
     build-essential \
     curl \
     devscripts \
@@ -19,7 +21,7 @@ RUN apt-get update && apt-get install -y \
     ruby-dev \
     rubygems \
     wget \
-    golang \
+    golang-go \
     && apt-get clean
 
 RUN echo "gem: --no-ri --no-rdoc" > /etc/gemrc

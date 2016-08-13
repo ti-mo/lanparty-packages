@@ -6,6 +6,7 @@ services:
     working_dir: /build/recipes/joki
     environment:
       - "GOPATH=/build/recipes/joki"
+      - "GOBIN=${GOPATH}/bin"
     command: fpm-cook
     volumes:
       - .:/build
