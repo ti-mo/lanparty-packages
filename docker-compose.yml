@@ -7,7 +7,7 @@ services:
     environment:
       - "GOPATH=/build/recipes/joki"
       - "GOBIN=${GOPATH}/bin"
-    command: fpm-cook
+    command: bash -c "fpm-cook clean && fpm-cook --pkg-dir /pkg"
     volumes:
       - .:/build
       - ./pkg:/pkg
