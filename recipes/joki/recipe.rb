@@ -12,6 +12,7 @@ class Joki < FPM::Cookery::Recipe
   depends 'fping'
 
   config_files '/etc/joki/config.toml.example'
+  default_prefix '/'
 
   section 'lanparty'
 
