@@ -6,6 +6,7 @@ RUN echo "deb http://httpredir.debian.org/debian jessie-backports main" >> /etc/
 
 RUN apt-get update && apt-get -t jessie-backports install -y \
     build-essential \
+    bison \
     curl \
     devscripts \
     equivs \

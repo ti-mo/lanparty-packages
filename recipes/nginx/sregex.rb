@@ -8,6 +8,8 @@ class Sregex < FPM::Cookery::Recipe
 
   homepage 'https://github.com/openresty/sregex'
 
+  build_depends 'bison'
+
   default_prefix '/usr/local'
 
   section 'lanparty'
