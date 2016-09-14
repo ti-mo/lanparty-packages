@@ -11,3 +11,10 @@ services:
     volumes:
       - .:/build
       - ./pkg:/pkg
+  nginx:
+    build: .
+    working_dir: /build/recipes/nginx
+    command: bash -c "fpm-cook clean && fpm-cook --pkg-dir /pkg"
+    volumes:
+      - .:/build
+      - ./pkg:/pkg
