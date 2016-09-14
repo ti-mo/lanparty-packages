@@ -22,6 +22,9 @@ class Sregex < FPM::Cookery::Recipe
 
   def install
     make :install, 'PREFIX' => prefix
+
+    # This installs the library onto the container/system for use during Nginx build
+    make :install, 'DESTDIR' => '/', 'PREFIX' => default_prefix
   end
 
 end

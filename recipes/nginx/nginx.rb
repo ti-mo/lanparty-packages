@@ -8,13 +8,18 @@ class Nginx < FPM::Cookery::Recipe
 
   homepage 'https://nginx.org'
 
+  build_depends 'libpcre3-dev', 'zlib1g-dev', 'libssl-dev'
+
   config_files '/etc/nginx/nginx.conf', '/etc/nginx/mime.types'
 
   section 'lanparty'
 
   source "https://nginx.org/download/nginx-#{version}.tar.gz"
+  sha256 '06221c1f43f643bc6bfe5b2c26d19e09f2588d5cde6c65bdb77dfcce7c026b3b'
 
   def build
+    safesystem('git clone https://github.com/openresty/replace-filter-nginx-module.git')
+
     configure \
       '--with-http_ssl_module',
       '--with-http_realip_module',
@@ -39,6 +44,8 @@ class Nginx < FPM::Cookery::Recipe
       '--with-http_slice_module',
       '--with-http_v2_module',
 
+      '--add-module=replace-filter-nginx-module',
+
       :sbin_path => '/usr/sbin/nginx',
       :conf_path => '/etc/nginx/nginx.conf',
       :lock_path => '/var/lock/nginx.lock',
@@ -49,9 +56,8 @@ class Nginx < FPM::Cookery::Recipe
       :http_fastcgi_temp_path => '/var/lib/nginx/fastcgi',
       :http_proxy_temp_path => '/var/lib/nginx/proxy',
       :http_scgi_temp_path => '/var/lib/nginx/scgi',
-      :http_uwsgi_temp_path => '/var/lib/nginx/uwsgi',
+      :http_uwsgi_temp_path => '/var/lib/nginx/uwsgi'
 
-      '--add-module=../replace-filter-nginx-module'
     make
   end
 
