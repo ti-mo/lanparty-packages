@@ -2,9 +2,9 @@ class Sregex < FPM::Cookery::Recipe
   description 'streaming regex library used in lanparty-nginx'
 
   name      'libsregex'
+  provides  'libsregex'
   version   '0.1'
   revision  1
-  provides  'libsregex'
 
   homepage 'https://github.com/openresty/sregex'
 
@@ -15,12 +15,11 @@ class Sregex < FPM::Cookery::Recipe
   source 'https://github.com/openresty/sregex.git', :with => 'git', :branch => 'master'
 
   def build
-    configure
     make
   end
 
   def install
-    make :install, 'DESTDIR' => destdir, 'PREFIX' => prefix
+    make :install, 'PREFIX' => prefix
   end
 
 end
