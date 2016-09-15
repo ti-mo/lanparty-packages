@@ -3,6 +3,7 @@ FROM debian:jessie
 
 ENV DEBIAN_FRONTEND noninteractive
 RUN echo "deb http://httpredir.debian.org/debian jessie-backports main" >> /etc/apt/sources.list
+COPY config/apt-preferences /etc/apt/preferences
 
 RUN apt-get update && apt-get -t jessie-backports install -y \
     build-essential \
