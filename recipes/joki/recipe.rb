@@ -8,13 +8,15 @@ class Joki < FPM::Cookery::Recipe
   homepage 'https://github.com/ti-mo/joki'
 
   provides 'joki'
+  section 'lanparty'
+
   build_depends 'golang'
   depends 'fping'
 
   config_files '/etc/joki/config.toml.example'
-  default_prefix '/'
 
-  section 'lanparty'
+  # lib() reads (default_)prefix (/usr), but we want it in /lib instead
+  default_prefix '/'
 
   source 'http://git.incline.eu/timo/joki.git', :with => 'git', :branch => 'master'
 
