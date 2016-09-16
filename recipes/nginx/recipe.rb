@@ -21,6 +21,9 @@ class Nginx < FPM::Cookery::Recipe
     'zlib1g',
     'libssl1.0.0'
 
+  replaces  'nginx-full', 'openresty'
+  conflicts 'nginx-full', 'openresty'
+
   exclude 'etc'
 
   source "https://nginx.org/download/nginx-#{version}.tar.gz"
