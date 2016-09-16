@@ -9,15 +9,25 @@ class Nginx < FPM::Cookery::Recipe
 
   homepage 'https://nginx.org'
 
-  build_depends 'libpcre3-dev', 'zlib1g-dev', 'libssl-dev'
+  build_depends \
+    'libpcre3-dev',
+    'zlib1g-dev',
+    'libssl-dev'
 
-  # Contains default config file, systemd unit, etc.
-  depends 'nginx-common'
+  depends \
+    'libsregex',
+    'nginx-common',
+    'libpcre3',
+    'zlib1g',
+    'libssl1.0.0'
 
   exclude 'etc'
 
   source "https://nginx.org/download/nginx-#{version}.tar.gz"
   sha256 '06221c1f43f643bc6bfe5b2c26d19e09f2588d5cde6c65bdb77dfcce7c026b3b'
+
+  chain_package true
+  chain_recipes 'sregex'
 
   def build
     safesystem('git clone https://github.com/openresty/replace-filter-nginx-module.git')
@@ -70,8 +80,5 @@ class Nginx < FPM::Cookery::Recipe
     var('lib/nginx').mkpath
 
   end
-
-  chain_package true
-  chain_recipes 'sregex'
 
 end

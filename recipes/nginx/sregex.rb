@@ -3,8 +3,9 @@ class Sregex < FPM::Cookery::Recipe
 
   name      'libsregex'
   provides  'libsregex'
-  version   '0.1'
+  version   '0.0.1'
   revision  1
+  section 'lanparty'
 
   homepage 'https://github.com/openresty/sregex'
 
