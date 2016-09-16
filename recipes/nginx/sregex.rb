@@ -24,9 +24,17 @@ class Sregex < FPM::Cookery::Recipe
 
   def install
     make :install, 'PREFIX' => prefix
+  end
 
-    # This installs the library onto the container/system for use during Nginx build
-    make :install, 'DESTDIR' => '/', 'PREFIX' => default_prefix
+  def after_package_create(package)
+    # This installs the resulting package to the container and solves
+    # multiple problems:
+    # - fpm-cookery wants to install libsregex before building,
+    #   but the package is not available through APT
+    # - Nginx dynamically links against this library in the next build step,
+    #   so we install the correct version here
+    # - This hook cleans up the `install` step above
+    safesystem("dpkg -i /pkg/#{package}")
   end
 
 end
