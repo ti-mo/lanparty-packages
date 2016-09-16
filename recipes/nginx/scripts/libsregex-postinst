@@ -1,0 +1,8 @@
+#!/bin/sh
+# Equivalent behaviour to FPM's --deb-shlibs,
+# not currently supported by fpm-cookery
+set -e
+
+case $1 in
+    configure|remove) ldconfig ;;
+esac

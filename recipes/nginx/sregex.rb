@@ -13,7 +13,8 @@ class Sregex < FPM::Cookery::Recipe
 
   default_prefix '/usr/local'
 
-  section 'lanparty'
+  post_install "scripts/#{name}-postinst"
+  post_uninstall "scripts/#{name}-postinst"
 
   source 'https://github.com/openresty/sregex.git', :with => 'git', :branch => 'master'
 
