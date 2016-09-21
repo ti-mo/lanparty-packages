@@ -73,7 +73,7 @@ class Nginx < FPM::Cookery::Recipe
       :http_scgi_temp_path => '/var/lib/nginx/scgi',
       :http_uwsgi_temp_path => '/var/lib/nginx/uwsgi'
 
-    make
+    make '-j8'
   end
 
   def install
