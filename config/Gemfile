@@ -1,0 +1,8 @@
+# Gemfile to set up the Ruby environment fpm-cookery
+# will run in inside the build container
+
+source "https://rubygems.org"
+
+gem 'fpm', '1.6.2'
+gem 'fpm-cookery', :git => 'https://github.com/ti-mo/fpm-cookery.git'
+gem 'buildtasks', '0.0.2'
