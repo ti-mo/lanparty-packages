@@ -6,6 +6,11 @@ services:
       context: .
       dockerfile: Dockerfile
     image: lanparty-packages:base
+  kernelimg:
+    build:
+      context: .
+      dockerfile: Dockerfile-kernel
+    image: lanparty-packages:kernel
   joki:
     image: lanparty-packages:base
     working_dir: /build/recipes/joki
