@@ -1,8 +1,13 @@
 version: '2'
 
 services:
+  baseimg:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: lanparty-packages:base
   joki:
-    build: .
+    image: lanparty-packages:base
     working_dir: /build/recipes/joki
     environment:
       - "GOPATH=/build/recipes/joki"
@@ -12,7 +17,7 @@ services:
       - .:/build
       - ./pkg:/pkg
   nginx:
-    build: .
+    image: lanparty-packages:base
     working_dir: /build/recipes/nginx
     command: bash -c "fpm-cook clean && fpm-cook --pkg-dir /pkg"
     volumes:
