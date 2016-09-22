@@ -28,3 +28,10 @@ services:
     volumes:
       - .:/build
       - ./pkg:/pkg
+  kernel-ck-tick:
+    image: lanparty-packages:kernel
+    working_dir: /build/recipes/kernel-ck-tick
+    command: bash -c "fpm-cook clean && fpm-cook --pkg-dir /pkg"
+    volumes:
+      - .:/build
+      - ./pkg:/pkg
