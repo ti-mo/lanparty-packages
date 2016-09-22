@@ -34,3 +34,4 @@ RUN echo "gem: --no-ri --no-rdoc" > /etc/gemrc
 
 COPY config/Gemfile /root/Gemfile
 RUN bundle install
+RUN gem specific_install https://github.com/ti-mo/fpm-cookery.git
