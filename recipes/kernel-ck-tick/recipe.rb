@@ -13,11 +13,12 @@ class KernelCkTick < FPM::Cookery::Recipe
     'kernel-package',
     "linux-source-#{version}"
 
-  source "http://ck.kolivas.org/patches/4.0/#{version}/#{version}-#{revision}/patch-#{version}-#{revision}.xz"
-  sha256 '4475edebbcac102e5d92921970c12b22482c08069cc1478a7c922453611e0871'
+  source "/usr/src/linux-source-#{version}.tar.xz", :with => 'local_path'
 
   def build
-
+    # Get the CK patchset
+    sh "wget http://ck.kolivas.org/patches/4.0/#{version}/#{version}-#{revision}/patch-#{version}-#{revision}.xz"
+    sh "unxz -kf patch-#{version}-#{revision}.xz"
   end
 
   def install
