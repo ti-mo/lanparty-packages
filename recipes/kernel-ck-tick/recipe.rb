@@ -11,6 +11,7 @@ class KernelCkTick < FPM::Cookery::Recipe
   build_depends \
     'fakeroot',
     'kernel-package',
+    'libssl-dev',
     "linux-source-#{version}"
 
   source "/usr/src/linux-source-#{version}.tar.xz", :with => 'local_path'
@@ -25,10 +26,10 @@ class KernelCkTick < FPM::Cookery::Recipe
 
     # Copy ticking kernel config
     FileUtils.cp datadir/"config-#{version}-#{revision}", sourcedir/".config"
-  end
 
-  def install
-
+    # Invoke kernel build
+    sh 'make-kpkg clean'
+    sh "make-kpkg --initrd --append-to-version -tick1k --revision=1.0 kernel_image -j4"
   end
 
 end
