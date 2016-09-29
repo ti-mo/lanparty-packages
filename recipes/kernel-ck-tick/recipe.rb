@@ -2,8 +2,8 @@ class KernelCkTick < FPM::Cookery::Recipe
   description 'Debian kernel with ck patchset and tick'
 
   name      'linux-image'
-  version   '4.6'
-  revision  'ck1'
+  version   '4.7'
+  revision  'ck5'
   section   'lanparty'
 
   homepage 'https://kernel.org'
@@ -17,8 +17,14 @@ class KernelCkTick < FPM::Cookery::Recipe
 
   def build
     # Get the CK patchset
-    sh "wget http://ck.kolivas.org/patches/4.0/#{version}/#{version}-#{revision}/patch-#{version}-#{revision}.xz"
+    sh "wget -nc http://ck.kolivas.org/patches/4.0/#{version}/#{version}-#{revision}/patch-#{version}-#{revision}.xz"
     sh "unxz -kf patch-#{version}-#{revision}.xz"
+
+    # Apply CK patchset to kernel tree
+    sh "patch -p1 -N -r- -i patch-#{version}-#{revision}"
+
+    # Copy ticking kernel config
+    FileUtils.cp datadir/"config-#{version}-#{revision}", sourcedir/".config"
   end
 
   def install
