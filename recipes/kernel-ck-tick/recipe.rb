@@ -32,4 +32,9 @@ class KernelCkTick < FPM::Cookery::Recipe
     sh "make-kpkg --initrd --append-to-version -tick1k --revision=1.0 kernel_image -j4"
   end
 
+  def install
+    # Move output artifact to pkgdir (/pkg)
+    FileUtils.mv Dir.glob(builddir/"linux-image-#{version}*.deb"), pkgdir
+  end
+
 end
