@@ -8,7 +8,10 @@ WORKDIR /root
 RUN echo "deb http://httpredir.debian.org/debian jessie-backports main" >> /etc/apt/sources.list
 COPY config/apt-preferences /etc/apt/preferences
 
-RUN apt-get update && apt-get -t jessie-backports install -y \
+# Make sure to run apt-get update before trying to install a dependency in
+# the container. This is required when /var/lib/apt/lists is empty.
+RUN apt-get update \
+ && apt-get -t jessie-backports install -y \
     build-essential \
     bison \
     curl \
@@ -28,7 +31,8 @@ RUN apt-get update && apt-get -t jessie-backports install -y \
     rubygems \
     wget \
     golang-go \
-    && apt-get clean
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
 
 RUN echo "gem: --no-ri --no-rdoc" > /etc/gemrc
 

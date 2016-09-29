@@ -17,21 +17,21 @@ services:
     environment:
       - "GOPATH=/build/recipes/joki"
       - "GOBIN=${GOPATH}/bin"
-    command: bash -c "fpm-cook clean && fpm-cook --pkg-dir /pkg"
+    command: bash -c "apt-get update && fpm-cook clean && fpm-cook --pkg-dir /pkg"
     volumes:
       - .:/build
       - ./pkg:/pkg
   nginx:
     image: lanparty-packages:base
     working_dir: /build/recipes/nginx
-    command: bash -c "fpm-cook clean && fpm-cook --pkg-dir /pkg"
+    command: bash -c "apt-get update && fpm-cook clean && fpm-cook --pkg-dir /pkg"
     volumes:
       - .:/build
       - ./pkg:/pkg
   kernel-ck-tick:
     image: lanparty-packages:kernel
     working_dir: /build/recipes/kernel-ck-tick
-    command: bash -c "fpm-cook clean && fpm-cook --pkg-dir /pkg --skip-package"
+    command: bash -c "apt-get update && fpm-cook clean && fpm-cook --pkg-dir /pkg --skip-package"
     volumes:
       - .:/build
       - ./pkg:/pkg
