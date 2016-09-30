@@ -11,8 +11,13 @@ class KernelCkTick < FPM::Cookery::Recipe
   build_depends \
     'fakeroot',
     'kernel-package',
-    'libssl-dev',
-    "linux-source-#{version}"
+    'libssl-dev'
+
+  def before_dependency_installation
+    if not File.file?(cachedir/"linux-source-#{version}.tar.xz")
+      build_depends << "linux-source-#{version}"
+    end
+  end
 
   source "/usr/src/linux-source-#{version}.tar.xz", :with => 'local_path'
 
