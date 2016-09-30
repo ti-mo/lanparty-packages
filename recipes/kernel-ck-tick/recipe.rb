@@ -27,7 +27,12 @@ class KernelCkTick < FPM::Cookery::Recipe
     sh "unxz -kf patch-#{version}-#{revision}.xz"
 
     # Apply CK patchset to kernel tree
-    sh "patch -p1 -N -r- -i patch-#{version}-#{revision}"
+    patch "patch-#{version}-#{revision}", 1
+
+    # Apply WireGuard patchset to kernel tree
+    sh 'git clone https://git.zx2c4.com/WireGuard'
+    sh "WireGuard/contrib/kernel-tree/create-patch.sh > wireguard-patch-#{version}-#{revision}"
+    patch "wireguard-patch-#{version}-#{revision}", 1
 
     # Copy ticking kernel config
     FileUtils.cp datadir/"config-#{version}-#{revision}", sourcedir/".config"

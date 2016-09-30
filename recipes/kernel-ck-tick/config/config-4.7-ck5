@@ -1,4 +1,11 @@
 #
+# WireGuard
+#
+CONFIG_WIREGUARD=y
+CONFIG_WIREGUARD_DEBUG=n
+CONFIG_WIREGUARD_PARALLEL=y
+
+#
 # Automatically generated file; DO NOT EDIT.
 # Linux/x86 4.7.2-ck5 Kernel Configuration
 #
