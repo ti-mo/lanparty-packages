@@ -5,3 +5,5 @@ RUN apt-get update \
  && apt-get -t jessie-backports install -y kernel-package \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
+
+COPY config/kernel-pkg.conf /etc/kernel-pkg.conf
