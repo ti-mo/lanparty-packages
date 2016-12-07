@@ -5,7 +5,7 @@ ENV DEBIAN_FRONTEND noninteractive
 
 WORKDIR /root
 
-RUN echo "deb http://httpredir.debian.org/debian jessie-backports main" >> /etc/apt/sources.list
+COPY config/apt-sources /etc/apt/sources.list
 COPY config/apt-preferences /etc/apt/preferences
 
 # Make sure to run apt-get update before trying to install a dependency in

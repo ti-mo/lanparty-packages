@@ -1,0 +1,15 @@
+# lanparty-packages - apt configuration
+# Use mirrors for as many things as possible
+# debian-security is an exception, but they employ a similar DNS strategy
+
+deb http://httpredir.debian.org/debian jessie main
+deb-src http://httpredir.debian.org/debian jessie main
+
+deb http://httpredir.debian.org/debian jessie-updates main
+deb-src http://httpredir.debian.org/debian jessie-updates main
+
+deb http://httpredir.debian.org/debian jessie-backports main
+deb-src  http://httpredir.debian.org/debian jessie-backports main
+
+deb http://deb.debian.org/debian-security jessie/updates main
+deb-src http://deb.debian.org/debian-security jessie/updates main
