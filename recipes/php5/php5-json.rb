@@ -1,6 +1,6 @@
-class Php5Json < FPM::Cookery::Recipe
+require '../../helpers/debian.rb'
 
-  Log = FPM::Cookery::Log
+class Php5Json < FPM::Cookery::Recipe
 
   description 'server-side, HTML-embedded scripting language with pthreads'
 
@@ -15,59 +15,23 @@ class Php5Json < FPM::Cookery::Recipe
     'dh-php5',
     'libjson-c-dev'
 
+  # Use last-found (highest) folder matching the glob and copy it to build/
   source Dir.glob(cachedir/'php-json-*/').last, :with => 'directory'
 
-  # Conditionally download the source package if it's missing
+  # Hook Implementations
   def before_dependency_installation
-
-    pattern = 'php-json_*.orig.tar.xz'
-    tarball = Dir.glob(cachedir/pattern).last
-
-    if not Dir.exist?(cachedir)
-      mkdir cachedir
-    end
-
-    if not tarball
-      Log.info 'No glob matches found for ' + cachedir/pattern
-
-      # run apt-get source
-      chdir cachedir
-      sh "apt-get source php5-json"
-
-    else
-      Log.info "Found source archive at #{tarball}, skipping apt-get source"
-    end
-
+    debian_get_source(pkg: 'php5-json', tar_prefix: 'php-json')
   end
 
   def build
-    sh "DEB_BUILD_OPTIONS=nocheck debuild -us -uc -b -j6"
+    debuild 4
   end
 
   def install
-    # Move build output to pkgdir
-    output = Dir.glob(workdir/'*.deb')
-
-    if output.empty?
-      Log.error "No build output found for #{name}, continuing"
-    else
-      Log.info "#{name} build output: #{output}"
-      FileUtils.mv output, pkgdir
-      Log.info "Moved build output to #{pkgdir}"
-    end
+    debian_move_deb
   end
 
-  def after_install()
-    # Remove build output ending in .build or .changes
-    %w|changes build|.each { |i|
-      cleanup = Dir.glob(workdir/"php-json_*.#{i}")
-      Log.warn cleanup
-      FileUtils.rm(cleanup)
-    }
-
-    # Clean up build directory
-    if Dir.exist?(builddir)
-      FileUtils.rm_rf(builddir)
-    end
+  def after_install
+    debian_cleanup
   end
 end
