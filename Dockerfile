@@ -1,17 +1,20 @@
 # Dockerfile
 FROM debian:jessie
 
-ENV DEBIAN_FRONTEND noninteractive
+ARG DEBIAN_FRONTEND=noninteractive
 
 WORKDIR /root
 
 COPY config/apt-sources /etc/apt/sources.list
 COPY config/apt-preferences /etc/apt/preferences
 
+# Warning: running apt-get build-dep on some packages requires a debian-stable
+# image. Even installing packages from backports could be too cutting-edge (php5)
+
 # Make sure to run apt-get update before trying to install a dependency in
 # the container. This is required when /var/lib/apt/lists is empty.
 RUN apt-get update \
- && apt-get -t jessie-backports install -y \
+ && apt-get install -y \
     build-essential \
     bison \
     curl \
