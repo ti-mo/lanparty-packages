@@ -10,9 +10,15 @@ def debian_cleanup
 
   # Clean up build directory
   if Dir.exist?(builddir)
-    FileUtils.rm_rf(builddir/'*')
+    FileUtils.rm_rf(Dir.glob(builddir/'*'))
     Log.info "Cleared #{builddir}"
   end
+end
+
+# Execute apt-get build-dep for the given package
+def debian_build_dep(pkg)
+  Log.info "Running apt-get build-dep for package #{pkg}"
+  sh "DEBIAN_FRONTEND=noninteractive apt-get -y build-dep #{pkg} > /dev/null"
 end
 
 # Download a source package to the cache folder
