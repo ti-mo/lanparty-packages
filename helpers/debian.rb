@@ -39,9 +39,8 @@ def debian_get_source(pkg: nil, tar_prefix: pkg)
   end
 
   if not tarball
-    Log.info 'No glob matches found for ' + cachedir/pattern
+    Log.info 'No glob matches found for ' + cachedir/pattern + ', running apt-get source'
 
-    # run apt-get source in cache/
     chdir cachedir
     sh "apt-get source #{pkg}"
   else
