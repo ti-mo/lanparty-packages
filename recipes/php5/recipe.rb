@@ -1,3 +1,5 @@
+require '../../helpers/debian.rb'
+
 class Php5Meta < FPM::Cookery::Recipe
 
   description 'server-side, HTML-embedded scripting language with pthreads'
@@ -9,7 +11,7 @@ class Php5Meta < FPM::Cookery::Recipe
   homepage 'http://php.net'
 
   chain_package true
-  chain_recipes 'php5-json'
   chain_recipes 'php5'
+  chain_recipes 'php5-json'
 
 end

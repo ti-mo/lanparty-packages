@@ -1,5 +1,3 @@
-require '../../helpers/debian.rb'
-
 class Php5Json < FPM::Cookery::Recipe
 
   description 'This package provides a module for JSON functions in PHP scripts.'
