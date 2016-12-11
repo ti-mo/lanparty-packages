@@ -68,5 +68,7 @@ def debuild(threads = 4)
     raise 'amount of threads given to debuild() needs to be an integer'
   end
 
+  Log.info "Running debuild with #{threads} threads"
+
   sh "DEB_BUILD_OPTIONS=nocheck debuild -us -uc -b -j#{threads} > /dev/null"
 end
