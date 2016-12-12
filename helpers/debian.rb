@@ -1,11 +1,11 @@
-Log = FPM::Cookery::Log
+require_relative 'generic.rb'
 
 # Deletes all files ending in *.build and *.changes in the recipe directory
 # Cleans out 'builddir' (tmp_build/)
 def debian_cleanup
   # Remove build output ending in .build or .changes
   cleanup = Dir.glob(workdir/"*.{build,changes}")
-  Log.info "Deleting the following files after successful build: #{cleanup}"
+  log("Deleting the following files after successful build: #{cleanup}")
   FileUtils.rm(cleanup)
 
   # Clean up build directory

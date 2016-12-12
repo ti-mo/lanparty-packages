@@ -1,0 +1,16 @@
+require '../../helpers/debian.rb'
+
+cachedir = 'test'
+
+task :default => [:build_php5, :build_php5j] do
+  log "Default"
+  log "Testing append "/cachedir
+end
+
+task :build_php5 do
+  log "Building php5"
+end
+
+task :build_php5j do
+  log "Building php5-json"
+end
