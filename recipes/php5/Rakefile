@@ -1,14 +1,17 @@
 require '../../helpers/debian.rb'
 
-cachedir = 'test'
-
 task :default => [:build_php5, :build_php5j] do
   log "Default"
-  log "Testing append "/cachedir
+  log workdir
+  log cachedir
 end
 
 task :build_php5 do
+  package = 'php5'
+
   log "Building php5"
+  debian_get_source pkg: package, quiet: false
+  debuild
 end
 
 task :build_php5j do
