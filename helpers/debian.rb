@@ -45,17 +45,27 @@ def debian_get_source(pkg: nil, tar_prefix: pkg, quiet: true)
 end
 
 # Executes debuild with the specified number of threads
-def debuild(threads: 4, quiet: true)
+def debuild(threads: 4, quiet: true, pkg: @pkg)
   if not threads.to_s =~ /^[0-9]+$/
     raise 'amount of threads given to debuild() needs to be an integer'
   end
 
+  if not pkg
+    raise 'pkg attribute not given, nor could it be inferred from context'
+  end
+
   q = quiet == true ? '> /dev/null' : ''
+  builddir_pkg = Dir.glob(builddir/pkg/"#{pkg}*/").last
 
-  log "Changing into detected extracted source directory"
-  chdir Dir.glob(builddir/@pkg/"#{@pkg}*/").last
+  if builddir_pkg
+    log "Changing into detected extracted source directory #{builddir_pkg}"
+    chdir builddir_pkg
+  else
+    log "Could not determine extracted source directory"
+    exit
+  end
 
-  log "Running debuild for package #{@pkg} with #{threads} threads"
+  log "Running debuild for package #{pkg} with #{threads} threads"
   shell %Q{DEB_BUILD_OPTIONS=nocheck debuild -us -uc -b -j#{threads} #{q}}
 end
 
