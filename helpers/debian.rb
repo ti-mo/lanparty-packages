@@ -10,7 +10,9 @@ def debian_get_source(pkg: nil, tar_prefix: pkg, quiet: true)
     raise 'pkg parameter must be given to debian_get_source()'
   end
 
+  # Assign root instance variable to pass pkg between other methods
   @pkg ||= pkg
+
   pattern = "#{tar_prefix}_*.orig.tar.xz"
   tarball = Dir.glob(cachedir/pkg/pattern).last
   q = quiet ? '> /dev/null' : ''
