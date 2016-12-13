@@ -7,13 +7,17 @@ task :default => [:build_php5, :build_php5j] do
 end
 
 task :build_php5 do
-  package = 'php5'
+  pkg = 'php5'
 
-  log "Building php5"
-  debian_get_source pkg: package, quiet: false
+  log "Building #{pkg}"
+  debian_get_source pkg: pkg, quiet: false
   debuild
 end
 
 task :build_php5j do
-  log "Building php5-json"
+  pkg = 'php-json'
+
+  log "Building #{pkg}"
+  debian_get_source pkg: pkg, quiet: false
+  debuild quiet: false
 end
