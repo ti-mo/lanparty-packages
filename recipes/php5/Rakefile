@@ -2,16 +2,14 @@ require '../../helpers/debian.rb'
 require '../../helpers/php.rb'
 
 task :default => [:build_php5, :build_php5j] do
-  log "Default"
-  log workdir
-  log cachedir
+  log "Entered default Rake task"
 end
 
 task :build_php5 do
-  @pkg = pkg = 'php5'
+  debian_workon_pkg 'php5'
 
-  log "Building #{pkg}"
-  debian_get_source pkg: pkg, quiet: false
+  debian_build_dep
+  debian_get_source quiet: false
   php_inject_zts
   debian_bump_package 'Build with ZTS flag'
   debuild
@@ -19,10 +17,9 @@ task :build_php5 do
 end
 
 task :build_php5j do
-  @pkg = pkg = 'php-json'
+  debian_workon_pkg 'php-json'
 
-  log "Building #{pkg}"
-  debian_get_source pkg: pkg, quiet: false
+  debian_get_source quiet: false
   debuild quiet: false
   debian_move
 end

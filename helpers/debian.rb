@@ -1,5 +1,24 @@
 require_relative 'generic.rb'
 
+@pkg = nil
+
+# Manages the global variable named @pkg to set
+# the context of which package to work on.
+def debian_workon_pkg(pkg)
+  @pkg = pkg
+  puts
+  puts '-----'
+  log "Working on package #{pkg}"
+end
+
+# Run apt-get build-dep for a specific package
+# - pkg is the package to install its build dependencies for
+def debian_build_dep(pkg: @pkg, quiet: true)
+  log "Getting build dependencies for package #{pkg}"
+  q = quiet ? '> /dev/null' : ''
+  shell %Q{apt-get build-dep #{pkg} #{q}}
+end
+
 # Download a source package to the cache folder
 # - pkg is the package to download using 'apt-get source'
 # - tar_prefix is the package to look for when conditionally downloading
@@ -8,13 +27,10 @@ require_relative 'generic.rb'
 # - quiet squelches the output of apt-get source
 #
 # This method sets an extraction cookie when successful.
-def debian_get_source(pkg: nil, tar_prefix: pkg, quiet: true)
+def debian_get_source(pkg: @pkg, tar_prefix: pkg, quiet: true)
   if not pkg
     raise 'pkg parameter must be given to debian_get_source()'
   end
-
-  # Assign root instance variable to pass pkg between other methods
-  @pkg ||= pkg
 
   pattern = "#{tar_prefix}_*.orig.tar.xz"
   tarball = Dir.glob(cachedir/pkg/pattern).last
