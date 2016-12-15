@@ -5,6 +5,9 @@ require_relative 'generic.rb'
 # - tar_prefix is the package to look for when conditionally downloading
 #    It is used to generate a glob pattern: <tar_prefix>_*.orig.tar.xz
 #    The default value is set to the value given to 'pkg'
+# - quiet squelches the output of apt-get source
+#
+# This method sets an extraction cookie when successful.
 def debian_get_source(pkg: nil, tar_prefix: pkg, quiet: true)
   if not pkg
     raise 'pkg parameter must be given to debian_get_source()'
@@ -48,6 +51,12 @@ def debian_get_source(pkg: nil, tar_prefix: pkg, quiet: true)
 end
 
 # Executes debuild with the specified number of threads
+# - threads is the amount of threads spawned when invoking debuild
+# - quiet squelches the build output
+# - pkg is the package to build. Automatically set if debian_get_source
+#   is run prior to this method in the same run.
+#
+# This method sets a build cookie when successful.
 def debuild(threads: 4, quiet: true, pkg: @pkg)
   if not threads.to_s =~ /^[0-9]+$/
     raise 'amount of threads given to debuild() needs to be an integer'
@@ -86,6 +95,9 @@ def debuild(threads: 4, quiet: true, pkg: @pkg)
 end
 
 # Moves all *.deb files from the recipe directory to 'pkgdir' (default ./pkg)
+# - pkg is the subdirectory to manage in 'pkgdir' to separate artefacts
+#   between multiple builds executed with this helper. Automatically set
+#   when executed after debian_get_source.
 def debian_move(pkg: @pkg)
   # Move build output to pkgdir
   artefacts = Dir.glob(builddir/pkg/'*.deb')
@@ -103,6 +115,8 @@ def debian_move(pkg: @pkg)
 end
 
 # Cleans out 'builddir' (tmp_build/)
+# - cache - when set to true, removes the cache directory too.
+#   (This will lead debian_get_source to fetch sources again!)
 def debian_cleanup(cache: false)
   # Clean up build directory
   if Dir.exist?(builddir)
@@ -116,7 +130,12 @@ def debian_cleanup(cache: false)
   end
 end
 
-# Increment the Debian package version number
+# Increment the Debian package version number by invoking 'dch -i' in builddir
+# - reason sets the commit message prefixed by 'Bump <pkg>:' for 'dch'
+# - pkg is the package to increment the version for. Automatically set by
+#   running debian_get_source prior to this command in the same run.
+#
+# Sets a 'bumpcookie' in 'builddir'
 def debian_bump_package(reason, pkg: @pkg)
   builddir_pkg = Dir.glob(builddir/pkg/"#{pkg}*/").last
   desc = "Bump #{pkg}: #{reason}"
@@ -133,6 +152,9 @@ def debian_bump_package(reason, pkg: @pkg)
   end
 end
 
+#
+# Cookies specifically for Debian package instructions
+#
 def bumpcookie?(pkg)
   File.exist?(builddir/".deb_bumpcookie_#{pkg}")
 end

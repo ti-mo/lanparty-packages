@@ -1,5 +1,11 @@
 require 'pathname'
 
+#
+# Path class that shapes a DSL that allows other methods and the Rakefile to
+# intuitively specify tokens like `builddir/'php'`, easy to read.
+#
+# Provides an idempotent mkdir call.
+#
 class Path < Pathname
   if '1.9' <= RUBY_VERSION
     alias_method :to_str, :to_s
@@ -26,6 +32,9 @@ class Path < Pathname
   end
 end
 
+#
+# Directory helpers and configuration
+#
 def workdir(dir = nil)
   dir.gsub!(%r{^/}, '') if dir
 
