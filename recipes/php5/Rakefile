@@ -1,4 +1,5 @@
 require '../../helpers/debian.rb'
+require '../../helpers/php.rb'
 
 task :default => [:build_php5, :build_php5j] do
   log "Default"
