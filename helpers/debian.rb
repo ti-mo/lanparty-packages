@@ -159,7 +159,7 @@ def debian_bump_package(reason, pkg: @pkg)
   if not bumpcookie?(pkg)
     log "No bump cookie found for package #{pkg}, bumping"
 
-    chdir builddir_pkg
+    Dir.chdir builddir_pkg
     shell %Q{dch -i #{desc}}
     log "Successfully bumped Debian version of package #{pkg}"
 
