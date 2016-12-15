@@ -9,9 +9,15 @@ task :build_php5 do
   debian_workon_pkg 'php5'
 
   debian_build_dep
-  debian_get_source quiet: false
+  debian_get_source
+
+  # We're building php with pthreads, which requires ZTS
+  # to be compiled into php. This method injects it idempotently.
   php_inject_zts
+
+  # Commit the changes from php_inject_zts by bumping package version
   debian_bump_package 'Build with ZTS flag'
+
   debuild
   debian_move
 end
@@ -19,8 +25,17 @@ end
 task :build_php5j do
   debian_workon_pkg 'php-json'
 
-  debian_get_source quiet: false
-  debuild quiet: false
+  # Install artifacts from completed php5 build
+  # -common and -dev need to be ZTS-enabled packages!
+  dpkg_install pkg: 'php5', prefix: 'php5-{common,dev}'
+
+  debian_build_dep
+  debian_get_source
+
+  # Bump our package version so apt actually prefers ours over upstream
+  debian_bump_package 'Build with ZTS-enabled php5-common,dev'
+
+  debuild
   debian_move
 end
 
