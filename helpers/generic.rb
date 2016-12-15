@@ -45,8 +45,24 @@ def builddir(path = nil)
   workdir('tmp-build')/path
 end
 
+#
+# Cookies
+# Om nom
+#
 def extractcookie?(pkg)
   File.exist?(builddir/".extractcookie_#{pkg}")
+end
+
+def set_extractcookie(pkg)
+  FileUtils.touch builddir/".extractcookie_#{pkg}"
+end
+
+def buildcookie?(pkg)
+  File.exist?(builddir/".buildcookie_#{pkg}")
+end
+
+def set_buildcookie(pkg)
+  FileUtils.touch builddir/".buildcookie_#{pkg}"
 end
 
 def log(text)

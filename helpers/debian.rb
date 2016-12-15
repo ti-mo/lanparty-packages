@@ -37,8 +37,11 @@ def debian_get_source(pkg: nil, tar_prefix: pkg, quiet: true)
 
   if not extractcookie?(pkg)
     log "No extract cookie found for package #{pkg}, copying to " + builddir/pkg
+
+    # Copy source tree from cache to builddir
     FileUtils.cp_r "#{cachedir/pkg}/.", builddir/pkg
-    FileUtils.touch builddir/".extractcookie_#{pkg}"
+
+    set_extractcookie(pkg)
   else
     log "Extract cookie found at " + builddir/".extractcookie_#{pkg}" + ", skipping"
   end
@@ -65,8 +68,21 @@ def debuild(threads: 4, quiet: true, pkg: @pkg)
     exit
   end
 
-  log "Running debuild for package #{pkg} with #{threads} threads"
-  shell %Q{DEB_BUILD_OPTIONS=nocheck debuild -us -uc -b -j#{threads} #{q}}
+  if not buildcookie?(pkg)
+    log "Running debuild for package #{pkg} with #{threads} threads"
+
+    # Invoke debuild, save result in buildstatus
+    buildstatus = shell %Q{DEB_BUILD_OPTIONS=nocheck debuild -us -uc -b -j#{threads} #{q}}
+
+    if buildstatus == true
+      log "Build succeeded for #{pkg}, setting build cookie."
+      set_buildcookie(pkg)
+    else
+      log "Build for #{pkg} failed, not setting build cookie."
+    end
+  else
+    log "Build cookie found for #{pkg}, skipping build."
+  end
 end
 
 # Moves all *.deb files from the recipe directory to 'pkgdir' (default ./pkg)
@@ -96,4 +112,12 @@ def debian_cleanup
     FileUtils.rm_rf(builddir/'*')
     log "Cleared #{builddir}"
   end
+end
+
+def bumpcookie?(pkg)
+  File.exist?(builddir/".deb_bumpcookie_#{pkg}")
+end
+
+def set_bumpcookie(pkg)
+  FileUtils.touch builddir/".deb_bumpcookie_#{pkg}"
 end
