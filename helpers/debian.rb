@@ -16,7 +16,7 @@ end
 def debian_build_dep(pkg: @pkg, quiet: true)
   log "Getting build dependencies for package #{pkg}"
   q = quiet ? '> /dev/null' : ''
-  shell %Q{apt-get build-dep #{pkg} #{q}}
+  shell %Q{DEBIAN_FRONTEND=noninteractive apt-get -y build-dep #{pkg} #{q}}
 end
 
 # Download a source package to the cache folder
@@ -45,7 +45,7 @@ def debian_get_source(pkg: @pkg, tar_prefix: pkg, quiet: true)
     # run apt-get source in cache/
     Dir.chdir cachedir/pkg
     log "Running 'apt-get source' for package #{pkg}"
-    shell %Q{apt-get source #{pkg} #{q}}
+    shell %Q{DEBIAN_FRONTEND=noninteractive apt-get -y source #{pkg} #{q}}
     log "Silencing 'apt-get source' output for package #{pkg}" if quiet == true
   else
     log "Found source archive at #{tarball}, skipping apt-get source"
