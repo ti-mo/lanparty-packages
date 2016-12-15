@@ -7,17 +7,29 @@ task :default => [:build_php5, :build_php5j] do
 end
 
 task :build_php5 do
-  pkg = 'php5'
+  @pkg = pkg = 'php5'
 
   log "Building #{pkg}"
   debian_get_source pkg: pkg, quiet: false
+  php_inject_zts
+  debian_bump_package 'Build with ZTS flag'
   debuild
+  debian_move
 end
 
 task :build_php5j do
-  pkg = 'php-json'
+  @pkg = pkg = 'php-json'
 
   log "Building #{pkg}"
   debian_get_source pkg: pkg, quiet: false
   debuild quiet: false
+  debian_move
+end
+
+task :clean do
+  debian_cleanup
+end
+
+task :cleancache do
+  debian_cleanup cache: true
 end

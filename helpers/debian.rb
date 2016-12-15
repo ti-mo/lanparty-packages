@@ -86,31 +86,50 @@ def debuild(threads: 4, quiet: true, pkg: @pkg)
 end
 
 # Moves all *.deb files from the recipe directory to 'pkgdir' (default ./pkg)
-def debian_move_deb
+def debian_move(pkg: @pkg)
   # Move build output to pkgdir
-  output = Dir.glob(workdir/'*.deb')
+  artefacts = Dir.glob(builddir/pkg/'*.deb')
 
-  if output.empty?
-    Log.error "No build output found for #{name}, continuing"
+  pkgdir(pkg).mkdir
+
+  if artefacts.empty?
+    log "No build artefacts found for #{pkg}"
+    return
   else
-    log "#{name} build output: #{output}"
-    FileUtils.mv output, pkgdir
-    log "Moved build output to #{pkgdir}"
+    log "#{pkg} build artefacts: #{artefacts}"
+    FileUtils.mv artefacts, pkgdir/pkg
+    log "Moved build artefacts to #{pkgdir}"
   end
 end
 
-# Deletes all files ending in *.build and *.changes in the recipe directory
 # Cleans out 'builddir' (tmp_build/)
-def debian_cleanup
-  # Remove build output ending in .build or .changes
-  cleanup = Dir.glob(workdir/"*.{build,changes}")
-  log("Deleting the following files after successful build: #{cleanup}")
-  FileUtils.rm(cleanup)
-
+def debian_cleanup(cache: false)
   # Clean up build directory
   if Dir.exist?(builddir)
-    FileUtils.rm_rf(builddir/'*')
-    log "Cleared #{builddir}"
+    FileUtils.rm_rf(builddir)
+    log "Removed #{builddir}"
+  end
+
+  if cache && Dir.exist?(cachedir)
+    FileUtils.rm_rf(cachedir)
+    log "Removed #{cachedir}"
+  end
+end
+
+# Increment the Debian package version number
+def debian_bump_package(reason, pkg: @pkg)
+  builddir_pkg = Dir.glob(builddir/pkg/"#{pkg}*/").last
+  desc = "Bump #{pkg}: #{reason}"
+
+  if not bumpcookie?(pkg)
+    log "No bump cookie found for package #{pkg}, bumping"
+
+    chdir builddir_pkg
+    shell %Q{dch -i #{desc}}
+    log "Successfully bumped Debian version of package #{pkg}"
+
+    set_bumpcookie(pkg)
+    log "Bump cookie set for package #{pkg}"
   end
 end
 
