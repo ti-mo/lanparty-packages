@@ -43,7 +43,7 @@ def debian_get_source(pkg: @pkg, tar_prefix: pkg, quiet: true)
     log 'No glob matches found for ' + cachedir/pkg/pattern
 
     # run apt-get source in cache/
-    chdir cachedir/pkg
+    Dir.chdir cachedir/pkg
     log "Running 'apt-get source' for package #{pkg}"
     shell %Q{apt-get source #{pkg} #{q}}
     log "Silencing 'apt-get source' output for package #{pkg}" if quiet == true
@@ -87,7 +87,7 @@ def debuild(threads: 4, quiet: true, pkg: @pkg)
 
   if builddir_pkg
     log "Changing into detected extracted source directory #{builddir_pkg}"
-    chdir builddir_pkg
+    Dir.chdir builddir_pkg
   else
     log "Could not determine extracted source directory"
     exit
