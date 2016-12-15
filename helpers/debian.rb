@@ -130,6 +130,27 @@ def debian_move(pkg: @pkg)
   end
 end
 
+# Install a locally-generated artifact for use in a future local build
+# - deb is the package (glob) to install to the system
+def dpkg_install(pkg: @pkg, prefix: nil, quiet: true)
+  if not prefix
+    raise 'need a prefix to search for in dpkg_install'
+  end
+
+  packages = Dir.glob(pkgdir/pkg/"#{prefix}*.deb")
+  q = quiet == true ? '> /dev/null' : ''
+
+  if packages.size > 0
+    log "Found the following packages in #{pkgdir/pkg}: #{packages}."
+    packages.each { |deb|
+      log "Installing #{File.basename(deb)}"
+      shell %Q{dpkg -i #{deb} #{q}}
+    }
+  else
+    log "dpkg_install couldn't find any packages in pkgdir/#{pkg} with prefix"
+  end
+end
+
 # Cleans out 'builddir' (tmp_build/)
 # - cache - when set to true, removes the cache directory too.
 #   (This will lead debian_get_source to fetch sources again!)
