@@ -44,6 +44,9 @@ task :build_php5j do
 end
 
 task :build_pthreads do
+  # Make sure to switch back to the dir where rake was called
+  Dir.chdir workdir
+
   shell "fpm-cook package pthreads.rb"
 end
 
