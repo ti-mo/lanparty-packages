@@ -130,6 +130,14 @@ def debian_move(pkg: @pkg)
   end
 end
 
+# Run apt-get install with a given package
+# - pkg is the package to install
+# - quiet silences apt-get output
+def apt_install(pkg: nil, quiet: true)
+  q = quiet == true ? '> /dev/null' : ''
+  shell %Q{apt-get install #{pkg.join(' ')} #{q}}
+end
+
 # Install a locally-generated artifact for use in a future local build
 # - deb is the package (glob) to install to the system
 def dpkg_install(pkg: @pkg, prefix: nil, quiet: true)

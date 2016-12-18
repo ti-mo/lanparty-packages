@@ -23,6 +23,7 @@ task :build_php5 do
 
   # Install artifacts from completed php5 build
   # -common and -dev need to be ZTS-enabled packages!
+  apt_install pkg: ['lsof', 'shtool'] # required by php5-common and dev respectively
   dpkg_install prefix: 'php5-{common,dev}'
 end
 
