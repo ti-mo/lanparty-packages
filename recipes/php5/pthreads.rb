@@ -4,7 +4,7 @@ class Pthreads < FPM::Cookery::Recipe
 
   name    'php5-pthreads'
   section 'lanparty'
-  version '2.0.10' # This is the final pthreads version for php5
+  version '2.0.11' # This is the final pthreads version for php5
 
   homepage 'https://github.com/krakjoe/pthreads'
 
@@ -13,6 +13,8 @@ class Pthreads < FPM::Cookery::Recipe
   depends 'php5-common'
 
   config_files '/etc/php5/mods-available/pthreads.ini'
+
+  @pkgdir = pkgdir/'pthreads'
 
   def php_extdir
     root(`php-config --extension-dir`.strip)
