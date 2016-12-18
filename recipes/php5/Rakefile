@@ -1,7 +1,7 @@
 require '../../helpers/debian.rb'
 require '../../helpers/php.rb'
 
-task :default => [:build_php5, :build_php5j] do
+task :default => [:build_php5, :build_php5j, :build_pthreads] do
   log "Entered default Rake task"
 end
 
@@ -20,14 +20,14 @@ task :build_php5 do
 
   debuild
   debian_move
+
+  # Install artifacts from completed php5 build
+  # -common and -dev need to be ZTS-enabled packages!
+  dpkg_install prefix: 'php5-{common,dev}'
 end
 
 task :build_php5j do
   debian_workon_pkg 'php-json'
-
-  # Install artifacts from completed php5 build
-  # -common and -dev need to be ZTS-enabled packages!
-  dpkg_install pkg: 'php5', prefix: 'php5-{common,dev}'
 
   debian_build_dep
   debian_get_source
@@ -37,6 +37,13 @@ task :build_php5j do
 
   debuild
   debian_move
+
+  # Install ZTS-enabled php5-json
+  dpkg_install prefix: 'php5-json'
+end
+
+task :build_pthreads do
+  shell "fpm-cook package pthreads.rb"
 end
 
 task :clean do
