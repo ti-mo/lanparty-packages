@@ -151,10 +151,10 @@ def dpkg_install(pkg: @pkg, prefix: nil, quiet: true)
 
   if packages.size > 0
     log "Found the following packages in #{pkgdir/pkg}: #{packages}."
-    packages.each { |deb|
+    packages.each do |deb|
       log "Installing #{File.basename(deb)}"
       shell %Q{dpkg -i #{deb} #{q}}
-    }
+    end
   else
     log "dpkg_install couldn't find any packages in pkgdir/#{pkg} with prefix"
   end
@@ -164,12 +164,15 @@ end
 # - cache - when set to true, removes the cache directory too.
 #   (This will lead debian_get_source to fetch sources again!)
 def debian_cleanup(cache: false)
-  # Clean up build directory
-  if Dir.exist?(builddir)
-    FileUtils.rm_rf(builddir)
-    log "Removed #{builddir}"
+  # Clean up build and destdir
+  %W|#{builddir} #{destdir}|.each do |dir|
+    if Dir.exist?(dir)
+      FileUtils.rm_rf(dir)
+      log "Removed #{dir}"
+    end
   end
 
+  # Only delete cache if explicitly called
   if cache && Dir.exist?(cachedir)
     FileUtils.rm_rf(cachedir)
     log "Removed #{cachedir}"
