@@ -35,6 +35,15 @@ services:
     volumes:
       - .:/build
       - ./pkg:/pkg
+  php:
+    image: lanparty-packages:base
+    working_dir: /build/recipes/php5
+    environment:
+      - PKGDIR=/pkg
+    command: bash -c "apt-get update && rake"
+    volumes:
+      - .:/build
+      - ./pkg:/pkg
   kernel-ck-tick:
     image: lanparty-packages:kernel
     working_dir: /build/recipes/kernel-ck-tick
