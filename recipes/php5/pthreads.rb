@@ -2,9 +2,10 @@ class Pthreads < FPM::Cookery::Recipe
 
   description 'pthreads module for php5-zts, git version'
 
-  name    'php5-pthreads'
-  section 'lanparty'
-  version '2.0.11' # This is the final pthreads version for php5
+  name     'php5-pthreads'
+  section  'lanparty'
+  version  '2.0.11' # This is the final pthreads version for php5
+  revision '1'
 
   homepage 'https://github.com/krakjoe/pthreads'
   source 'https://github.com/krakjoe/pthreads', :with => 'git', :branch => 'PHP5'
@@ -27,8 +28,9 @@ class Pthreads < FPM::Cookery::Recipe
     @gitref = `git -C #{cachedir/'pthreads'} rev-parse --short HEAD`.strip
 
     # Hack to inject revision into recipe after the source is downloaded
+    @oldrev = revision
     def self.revision
-      "git+#{@gitref}"
+      "#{@oldrev}+git~#{@gitref}"
     end
   end
 
