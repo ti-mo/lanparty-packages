@@ -7,13 +7,15 @@ class Pthreads < FPM::Cookery::Recipe
   version '2.0.11' # This is the final pthreads version for php5
 
   homepage 'https://github.com/krakjoe/pthreads'
-
   source 'https://github.com/krakjoe/pthreads', :with => 'git', :branch => 'PHP5'
 
+  # ZTS-enabled php5-common should be installed before running,
+  # since the `php-config` output will determine the build environment
   depends 'php5-common'
 
   config_files '/etc/php5/mods-available/pthreads.ini'
 
+  # Manipulate pkgdir to separate build output from other recipes
   @pkgdir = pkgdir/'pthreads'
 
   def php_extdir

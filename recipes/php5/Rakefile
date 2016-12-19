@@ -5,7 +5,7 @@ require '../../helpers/php.rb'
 @pkgdir = newpath(ENV['PKGDIR']) if ENV['PKGDIR']
 
 task :default => [:build_php5, :build_php5j, :build_pthreads] do
-  log "Entered default Rake task"
+  log "Successfully built php5, php5-json and pthreads"
 end
 
 task :build_php5 do
@@ -47,10 +47,12 @@ task :build_php5j do
 end
 
 task :build_pthreads do
-  # Make sure to switch back to the dir where rake was called
+  cstr = ENV['PKGDIR'] ? "--pkg-dir #{@pkgdir}" : ''
+
+  # Make sure we're in the dir where rake was called
   Dir.chdir workdir
 
-  shell 'fpm-cook package pthreads.rb'
+  shell "fpm-cook #{cstr} package pthreads.rb"
 end
 
 task :clean do
@@ -58,6 +60,6 @@ task :clean do
   shell 'fpm-cook clean pthreads.rb'
 end
 
-task :cleancache do
+task :cleancache => :clean do
   debian_cleanup cache: true
 end
