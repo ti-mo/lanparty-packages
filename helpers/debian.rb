@@ -1,5 +1,6 @@
 require_relative 'generic.rb'
 
+# Debian-specific instance variables that persist through method calls
 @pkg = nil
 
 # Manages the global variable named @pkg to set

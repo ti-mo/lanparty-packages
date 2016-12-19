@@ -35,7 +35,12 @@ end
 #
 # Directory helpers and configuration
 #
+def newpath(dir)
+  dir.is_a?(Path) ? dir : Path.new(dir)
+end
+
 def workdir(dir = nil)
+  # Ignore leading slash in dir param to prevent 'breakout' above workdir
   dir.gsub!(%r{^/}, '') if dir
 
   # Store the workdir when this method is called for the first time
@@ -43,15 +48,19 @@ def workdir(dir = nil)
 end
 
 def pkgdir(path = nil)
-  workdir('pkg')/path
+  (@pkgdir ||= workdir('pkg'))/path
 end
 
 def cachedir(path = nil)
-  workdir('cache')/path
+  (@cachedir ||= workdir('cache'))/path
 end
 
 def builddir(path = nil)
-  workdir('tmp-build')/path
+  (@builddir ||= workdir('tmp-build'))/path
+end
+
+def destdir(path = nil)
+  (@destdir ||= workdir('tmp-dest'))/path
 end
 
 #

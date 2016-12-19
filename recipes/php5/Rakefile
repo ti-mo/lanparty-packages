@@ -1,6 +1,9 @@
 require '../../helpers/debian.rb'
 require '../../helpers/php.rb'
 
+# Override pkgdir with an environment attribute
+@pkgdir = newpath(ENV['PKGDIR']) if ENV['PKGDIR']
+
 task :default => [:build_php5, :build_php5j, :build_pthreads] do
   log "Entered default Rake task"
 end
