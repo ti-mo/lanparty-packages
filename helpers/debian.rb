@@ -136,7 +136,7 @@ end
 # - quiet silences apt-get output
 def apt_install(pkg: nil, quiet: true)
   q = quiet == true ? '> /dev/null' : ''
-  shell %Q{apt-get install #{pkg.join(' ')} #{q}}
+  shell %Q{DEBIAN_FRONTEND=noninteractive apt-get install -y #{pkg.join(' ')} #{q}}
 end
 
 # Install a locally-generated artifact for use in a future local build
