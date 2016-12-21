@@ -46,8 +46,15 @@ services:
       - ./pkg:/pkg
   kernel-ck-tick:
     image: lanparty-packages:kernel
-    working_dir: /build/recipes/kernel-ck-tick
-    command: bash -c "apt-get update && fpm-cook clean && fpm-cook --pkg-dir /pkg --skip-package"
+    working_dir: /build/recipes/kernel-ck
+    command: bash -c "apt-get update && fpm-cook clean tick.rb && fpm-cook --pkg-dir /pkg --skip-package package tick.rb"
+    volumes:
+      - .:/build
+      - ./pkg:/pkg
+  kernel-ck-notick:
+    image: lanparty-packages:kernel
+    working_dir: /build/recipes/kernel-ck
+    command: bash -c "apt-get update && fpm-cook clean notick.rb && fpm-cook --pkg-dir /pkg --skip-package package notick.rb"
     volumes:
       - .:/build
       - ./pkg:/pkg
