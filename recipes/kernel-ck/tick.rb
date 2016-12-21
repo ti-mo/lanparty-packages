@@ -2,8 +2,8 @@ class KernelCkTick < FPM::Cookery::Recipe
   description 'Debian kernel with ck patchset and tick'
 
   name      'linux-image'
-  version   '4.7'
-  revision  'ck5'
+  version   '4.8'
+  revision  'ck8'
   section   'lanparty'
 
   homepage 'https://kernel.org'
