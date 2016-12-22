@@ -6,3 +6,6 @@ tmp-dest/
 # Source and golang pkg
 recipes/*/src
 recipes/*/pkg
+
+# IntelliJ Stuff
+*.iml
