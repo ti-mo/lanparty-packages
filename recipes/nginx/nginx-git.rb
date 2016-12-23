@@ -26,7 +26,7 @@ class Nginx < FPM::Cookery::Recipe
 
   exclude 'etc'
 
-  source 'http://git.incline.eu/timo/nginx.git', :with => 'git', :branch => 'no-etag'
+  source 'https://git.incline.eu/timo/nginx.git', :with => 'git', :branch => 'no-etag'
 
   chain_package true
   chain_recipes 'sregex'

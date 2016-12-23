@@ -35,6 +35,13 @@ services:
     volumes:
       - .:/build
       - ./pkg:/pkg
+  nginx-git:
+    image: lanparty-packages:base
+    working_dir: /build/recipes/nginx
+    command: bash -c "apt-get update && fpm-cook clean && fpm-cook --pkg-dir /pkg package nginx-git.rb"
+    volumes:
+      - .:/build
+      - ./pkg:/pkg
   php:
     image: lanparty-packages:base
     working_dir: /build/recipes/php5
