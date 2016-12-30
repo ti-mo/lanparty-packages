@@ -55,7 +55,7 @@ Available options are:
 - consul
 - joki
 - nginx
-- nginx-git
+- nginx-git (builds ti-mo/nginx)
 - php
 - kernel-ck-tick
 - kernel-ck-notick
@@ -120,10 +120,18 @@ Publish repository (make sure to specify both i386 and amd64):
 
 ## Dropping a published repo
 
+Does what it says on the tin, drops the published version of the repo
+(but keeps the repo itself around!):
+
 `aptly-cli publish_drop --name lanparty`
 
 ## Updating a published repo
 
-Update a published repo, for example, to change the prefix:
+Update a published repo, mostly used for changing the key of the GPG ID to
+sign the repo with:
+
+`aptly-cli publish_update --distribution lanparty --gpg_key 466665F8`
+
+Or to change the prefix:
 
 `aptly-cli publish_update --distribution lanparty --prefix .`
