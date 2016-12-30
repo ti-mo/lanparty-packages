@@ -141,11 +141,7 @@ end
 
 # Install a locally-generated artifact for use in a future local build
 # - deb is the package (glob) to install to the system
-def dpkg_install(pkg: @pkg, prefix: nil, quiet: true)
-  if not prefix
-    raise 'need a prefix to search for in dpkg_install'
-  end
-
+def dpkg_install(pkg: @pkg, prefix: pkg, quiet: true)
   packages = Dir.glob(pkgdir/pkg/"#{prefix}*.deb")
   q = quiet == true ? '> /dev/null' : ''
 
