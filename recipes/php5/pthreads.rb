@@ -17,7 +17,7 @@ class Pthreads < FPM::Cookery::Recipe
   config_files '/etc/php5/mods-available/pthreads.ini'
 
   # Manipulate pkgdir to separate build output from other recipes
-  @pkgdir = pkgdir/'pthreads'
+  @pkgdir = pkgdir/name
 
   def php_extdir
     root(`php-config --extension-dir`.strip)
