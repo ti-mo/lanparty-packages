@@ -21,8 +21,8 @@ class Nginx < FPM::Cookery::Recipe
     'zlib1g',
     'libssl1.0.0'
 
-  replaces  'nginx-full', 'openresty'
-  conflicts 'nginx-full', 'openresty'
+  replaces  'nginx-full', 'openresty', 'nginx-git'
+  conflicts 'nginx-full', 'openresty', 'nginx-git'
 
   exclude 'etc'
 
