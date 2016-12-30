@@ -152,7 +152,7 @@ def dpkg_install(pkg: @pkg, prefix: pkg, quiet: true)
       shell %Q{dpkg -i #{deb} #{q}}
     end
   else
-    log "dpkg_install couldn't find any packages in pkgdir/#{pkg} with prefix"
+    log "dpkg_install couldn't find any packages at " + pkgdir/pkg/"#{prefix}*.deb"
   end
 end
 
