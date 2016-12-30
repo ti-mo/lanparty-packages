@@ -1,3 +1,5 @@
+require '../../helpers/debian.rb'
+
 class NginxGit < FPM::Cookery::Recipe
   description 'high-performance web server built with replace-filter module'
 
