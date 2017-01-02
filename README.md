@@ -64,7 +64,7 @@ Check `docker-compose.yml` for all available options.
 
 The output of the package build processes can be found in `pkg/`.
 
-# Uploading
+# Distributing
 
 This section assumes you have an Aptly API set up, which is beyond the scope
 of this README.
@@ -100,6 +100,16 @@ Create the repository itself:
 
 `aptly-cli -c aptly-cli.conf repo_create --name lanparty`
 
+Publish repository with both x86 architectures (i386 and amd64):
+
+`aptly-cli publish_repo --name lanparty --sourcekind local --distribution lanparty --architectures i386,amd64 --prefix .`
+
+## Uploading
+
+This heading (Uploading) and the next (Publishing) are to be repeated for every
+batch of packages you want to add to the repository. This allows for atomic
+transactions, for example, when uploading a bunch of dependant packages.
+
 Upload a .deb file to a directory of choice. (mind the leading /)
 
 `aptly-cli file_upload --upload influxdb_1.0.2_amd64.deb --directory /lanparty-incoming`
@@ -108,13 +118,15 @@ List uploaded files in `lanparty-incoming`:
 
 `aptly-cli file_list --directory lanparty-incoming`
 
+## Publishing
+
 Rotate uploaded files into repository:
 
 `aptly-cli repo_upload --dir lanparty-incoming --name lanparty`
 
-Publish repository (make sure to specify both i386 and amd64):
+Update the published repository with:
 
-`aptly-cli publish_repo --name lanparty --sourcekind local --distribution lanparty --architectures i386,amd64 --prefix .`
+`aptly-cli publish_update --distribution lanparty`
 
 # Useful
 
@@ -135,3 +147,12 @@ sign the repo with:
 Or to change the prefix:
 
 `aptly-cli publish_update --distribution lanparty --prefix .`
+
+## Deleting a (file) folder
+
+Even though files get moved out of directories when invoking `repo_upload`,
+the directories itself will stick around. Run the following to delete a file
+or a whole directory. (for example when uploading files to temporary
+directories with timestamps, etc.)
+
+`aptly-cli file_delete --target /lanparty-incoming`
