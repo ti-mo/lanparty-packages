@@ -18,7 +18,7 @@ class Joki < FPM::Cookery::Recipe
   # lib() reads (default_)prefix (/usr), but we want it in /lib instead
   default_prefix '/'
 
-  source 'http://git.incline.eu/timo/joki.git', :with => 'git', :branch => 'master'
+  source 'https://github.com/ti-mo/joki.git', :with => 'git', :branch => 'master'
 
   @pkgdir = pkgdir/name
 
