@@ -33,7 +33,8 @@ RUN apt-get update \
     ruby-dev \
     rubygems \
     wget \
-    golang-go \
+ && apt-get install -y -t jessie-backports \
+    golang \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
