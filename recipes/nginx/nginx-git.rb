@@ -47,7 +47,6 @@ class NginxGit < FPM::Cookery::Recipe
     end
   end
 
-  # Manipulate pkgdir to separate build output from other recipes
   @pkgdir = pkgdir/name
 
   chain_package true
