@@ -142,9 +142,17 @@ end
 # Run apt-get install with a given package
 # - pkg is the package to install
 # - quiet silences apt-get output
-def apt_install(pkg: nil, quiet: true)
+def apt_install(pkg: nil, distro: nil, quiet: true)
   q = quiet == true ? '> /dev/null' : ''
-  shell %Q{DEBIAN_FRONTEND=noninteractive apt-get install -y #{pkg.join(' ')} #{q}}
+  d = distro ? "-t #{distro}" : ''
+
+  # Re-declare pkg as a list if it can't be joined
+  if not pkg.respond_to?(:join)
+    pkg = [pkg]
+  end
+
+  log "Installing packages: #{pkg}"
+  shell %Q{DEBIAN_FRONTEND=noninteractive apt-get install -y #{pkg.join(' ')} #{d} #{q}}
 end
 
 # Install a locally-generated artifact for use in a future local build
