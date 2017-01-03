@@ -14,10 +14,13 @@ end
 
 # Run apt-get build-dep for a specific package
 # - pkg is the package to install its build dependencies for
-def debian_build_dep(pkg: @pkg, quiet: true)
+# - distro is the target distribution for dependency resolution
+# - quiet silences installation output
+def debian_build_dep(pkg: @pkg, distro: nil, quiet: true)
   log "Getting build dependencies for package #{pkg}"
-  q = quiet ? '> /dev/null' : ''
-  shell %Q{DEBIAN_FRONTEND=noninteractive apt-get -y build-dep #{pkg} #{q}}
+  q = quiet ? '> /dev/null 2>&1' : ''
+  d = distro ? "-t #{distro}" : ''
+  shell %Q{DEBIAN_FRONTEND=noninteractive apt-get -y build-dep #{pkg} #{d} #{q}}
 end
 
 # Download a source package to the cache folder
