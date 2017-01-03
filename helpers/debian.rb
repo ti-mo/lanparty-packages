@@ -195,10 +195,12 @@ end
 # - reason sets the commit message prefixed by 'Bump <pkg>:' for 'dch'
 # - pkg is the package to increment the version for. Automatically set by
 #   running debian_get_source prior to this command in the same run.
+# - dir_prefix is the name of the extracted source package dir in case it
+#   differs from the name of the binary package.
 #
 # Sets a 'bumpcookie' in 'builddir'
-def debian_bump_package(reason, pkg: @pkg)
-  builddir_pkg = Dir.glob(builddir/pkg/"#{pkg}*/").last
+def debian_bump_package(reason, pkg: @pkg, dir_prefix: pkg)
+  builddir_pkg = Dir.glob(builddir/pkg/"#{dir_prefix}*/").last
   desc = "Bump #{pkg}: #{reason}"
 
   if not bumpcookie?(pkg)
