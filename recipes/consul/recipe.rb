@@ -2,7 +2,7 @@ class Consul < FPM::Cookery::Recipe
   description 'A distributed service discovery tool'
 
   name      'consul'
-  version   '0.7.0'
+  version   '0.7.2'
   revision  1
 
   homepage 'https://consul.io'
@@ -16,7 +16,7 @@ class Consul < FPM::Cookery::Recipe
   default_prefix '/usr/local'
 
   source "https://releases.hashicorp.com/consul/#{version}/consul_#{version}_linux_amd64.zip"
-  sha256 'b350591af10d7d23514ebaa0565638539900cdb3aaa048f077217c4c46653dd8'
+  sha256 'aa97f4e5a552d986b2a36d48fdc3a4a909463e7de5f726f3c5a89b8a1be74a58'
 
   def build
   end
