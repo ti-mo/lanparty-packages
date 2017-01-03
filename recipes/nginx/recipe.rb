@@ -2,7 +2,7 @@ class Nginx < FPM::Cookery::Recipe
   description 'high-performance web server built with replace-filter module'
 
   name      'nginx'
-  version   '1.11.4'
+  version   '1.11.8'
   revision  1
   provides  'nginx'
   section   'lanparty'
@@ -27,7 +27,9 @@ class Nginx < FPM::Cookery::Recipe
   exclude 'etc'
 
   source "https://nginx.org/download/nginx-#{version}.tar.gz"
-  sha256 '06221c1f43f643bc6bfe5b2c26d19e09f2588d5cde6c65bdb77dfcce7c026b3b'
+  sha256 '53aef3715d79015314c2dcb18f2b185a0c64368cc01b30bdf0737a215f666b34'
+
+  @pkgdir = pkgdir/name
 
   chain_package true
   chain_recipes 'sregex'
