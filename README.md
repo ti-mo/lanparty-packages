@@ -65,6 +65,14 @@ Check `docker-compose.yml` for all available options.
 
 The output of the package build processes can be found in `pkg/`.
 
+## Cleaning up containers
+
+`docker-compose` creates new containers everytime `docker-compose run` is
+invoked. This causes containers of different builds to keep piling up. Run
+the following command in the repo dir to clean up containers from all runs:
+
+`docker-compose rm`
+
 # Distributing
 
 This section assumes you have an Aptly API set up, which is beyond the scope
