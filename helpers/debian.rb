@@ -36,7 +36,7 @@ def debian_get_source(pkg: @pkg, tar_prefix: pkg, quiet: true)
     raise 'pkg parameter must be given to debian_get_source()'
   end
 
-  pattern = "#{tar_prefix}_*.orig.tar.xz"
+  pattern = "#{tar_prefix}_*.orig.*"
   tarball = Dir.glob(cachedir/pkg/pattern).last
   q = quiet ? '> /dev/null' : ''
 
@@ -68,6 +68,9 @@ def debian_get_source(pkg: @pkg, tar_prefix: pkg, quiet: true)
   else
     log "Extract cookie found at " + builddir/".extractcookie_#{pkg}" + ", skipping"
   end
+
+  # Best effort to guess extracted source directory
+  return newpath(Dir.glob(builddir(pkg)/'*/').last)
 end
 
 # Executes debuild with the specified number of threads
@@ -86,6 +89,8 @@ def debuild(threads: 4, quiet: true, pkg: @pkg)
     raise 'pkg attribute not given, nor could it be inferred from context'
   end
 
+  log "Entering debuild for package #{pkg}"
+
   q = quiet == true ? '> /dev/null' : ''
   builddir_pkg = Dir.glob(builddir/pkg/"#{pkg}*/").last
 
@@ -93,7 +98,7 @@ def debuild(threads: 4, quiet: true, pkg: @pkg)
     log "Changing into detected extracted source directory #{builddir_pkg}"
     Dir.chdir builddir_pkg
   else
-    log "Could not determine extracted source directory"
+    log "Could not determine extracted source directory for #{pkg}"
     exit
   end
 
