@@ -18,6 +18,8 @@ class Consul < FPM::Cookery::Recipe
   source "https://releases.hashicorp.com/consul/#{version}/consul_#{version}_linux_amd64.zip"
   sha256 'aa97f4e5a552d986b2a36d48fdc3a4a909463e7de5f726f3c5a89b8a1be74a58'
 
+  @pkgdir = pkgdir/name
+
   def build
   end
 
