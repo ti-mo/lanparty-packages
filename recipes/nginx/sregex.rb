@@ -1,3 +1,5 @@
+require '../../helpers/generic.rb'
+
 class Sregex < FPM::Cookery::Recipe
   description 'streaming regex library used in lanparty-nginx'
 
