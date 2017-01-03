@@ -52,14 +52,14 @@ To build a specific package, run:
 
 Available options are:
 
-- consul
-- collectd
-- joki
-- nginx
-- nginx-git (builds ti-mo/nginx)
-- php
-- kernel-ck-tick
-- kernel-ck-notick
+- consul - service discovery build from upstream
+- collectd - monitoring agent, built from Debian source package
+- joki - lightweight latency tracking in Go + InfluxDB
+- nginx - official upstream with replace-filter module
+- nginx-git - same as upstream, but builds ti-mo/nginx from Git
+- php5 - ZTS + pthreads build from Debian sources
+- kernel-ck-tick - custom kernel with BFS/MuQSS and 1000HZ
+- kernel-ck-notick - same as above, but tickless (WIP)
 
 Check `docker-compose.yml` for all available options.
 
