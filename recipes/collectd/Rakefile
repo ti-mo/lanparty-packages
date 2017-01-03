@@ -1,0 +1,38 @@
+require '../../helpers/debian.rb'
+
+# Override pkgdir with an environment attribute
+@pkgdir = newpath(ENV['PKGDIR']) if ENV['PKGDIR']
+
+task :default => [:build_collectd] do
+  log "Successfully built collectd"
+end
+
+task :build_collectd do
+  debian_workon_pkg 'collectd'
+
+  # Single out dependencies that fail to be satisfied from 'stable'
+  # This is to avoid running build-dep against backports
+  apt_install pkg: ['libriemann-client-dev', 'riemann-c-client'],
+    distro: 'jessie-backports'
+
+  debian_build_dep
+  collectd_builddir = debian_get_source
+
+  # Patch in modifications proposed upstream at
+  # https://github.com/collectd/collectd/pull/1479
+  gitdir = git url: 'https://github.com/ti-mo/collectd.git'
+  FileUtils.cp gitdir/'src/netlink.c', collectd_builddir/'src/netlink.c'
+  FileUtils.cp gitdir/'src/types.db', collectd_builddir/'src/types.db'
+  debian_bump_package 'Apply patch from latest Git commit'
+
+  debuild
+  debian_move
+end
+
+task :clean do
+  debian_cleanup
+end
+
+task :cleancache => :clean do
+  debian_cleanup cache: true
+end

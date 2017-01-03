@@ -21,6 +21,15 @@ services:
     volumes:
       - .:/build
       - ./pkg:/pkg
+  collectd:
+    image: lanparty-packages:base
+    working_dir: /build/recipes/collectd
+    environment:
+      - PKGDIR=/pkg
+    command: bash -c "apt-get update && rake clean && rake"
+    volumes:
+      - .:/build
+      - ./pkg:/pkg
   consul:
     image: lanparty-packages:base
     working_dir: /build/recipes/consul

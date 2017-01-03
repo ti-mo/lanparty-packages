@@ -53,6 +53,7 @@ To build a specific package, run:
 Available options are:
 
 - consul
+- collectd
 - joki
 - nginx
 - nginx-git (builds ti-mo/nginx)
