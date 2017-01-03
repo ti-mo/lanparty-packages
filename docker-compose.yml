@@ -56,7 +56,7 @@ services:
     working_dir: /build/recipes/php5
     environment:
       - PKGDIR=/pkg
-    command: bash -c "apt-get update && rake"
+    command: bash -c "apt-get update && rake clean && rake"
     volumes:
       - .:/build
       - ./pkg:/pkg
