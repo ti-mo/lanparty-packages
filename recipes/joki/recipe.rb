@@ -20,6 +20,8 @@ class Joki < FPM::Cookery::Recipe
 
   source 'http://git.incline.eu/timo/joki.git', :with => 'git', :branch => 'master'
 
+  @pkgdir = pkgdir/name
+
   def build
     sh "go get"
     sh "go build -x -o joki"
