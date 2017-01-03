@@ -96,3 +96,38 @@ def shell(*args)
   end
   return success
 end
+
+# Pull a git repository and return its location on disk,
+# using cachedir/git-reponame as a convention.
+# Additionally uses the @pkg variable to nest/group its download
+#
+# - url is the git url
+# - branch (default 'master') is the branch to check out
+# - quiet (default true) squelches stderr/stdout
+def git(url: nil, branch: 'master', quiet: true)
+  if not url
+    raise "url not given in git call"
+  end
+
+  q = quiet ? '> /dev/null 2>&1' : ''
+  gitname = "git-#{url.split('/').last.split('.').first}"
+  gitcachedir = @pkg ? cachedir/@pkg/gitname : cachedir/gitname
+
+  if not Dir.exist?(gitcachedir)
+    # Clone repo if dir does not exist
+    log "Cloning repo #{gitname} into #{gitcachedir}"
+    shell %Q{git clone #{url} #{gitcachedir} #{q}}
+  end
+
+  Dir.chdir(gitcachedir) {
+    # Check out branch specified in branch argument
+    log "Checking out branch '#{branch}' in repo '#{gitname}'"
+    shell %Q{git checkout #{branch} #{q}}
+
+    # Pull the branch
+    log "Pulling branch '#{branch}'"
+    shell %Q{git pull #{q}}
+  }
+
+  return gitcachedir
+end
