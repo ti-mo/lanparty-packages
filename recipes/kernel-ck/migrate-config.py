@@ -228,7 +228,7 @@ with open(path_migration) as migration_file, \
     dst_conf_file.write(render_changes(src_conf_cts, changes))
 
     if not args['nodiff']:
-        print('Results:')
+        print('Additions:')
         print_diff(additions, '+')
-        print()
+        print('\nChanges:')
         print_diff({changes[x] for x in changes}, '~')
