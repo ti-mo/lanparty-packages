@@ -44,7 +44,7 @@ class DiffAction:
         return '{}: "{}" -> "{}" line {}'.format(self.key, self.oldval, self.val, self.line)
 
     def __str__(self):
-        if self.val == 'n' or self.val == 'y':
+        if self.val == 'n' or self.val == 'y' or self.val.isdigit():
             return '{}={}'.format(self.key, self.val)
         elif self.val == 'unset':
             return '# {} is not set'.format(self.key)
