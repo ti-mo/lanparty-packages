@@ -1,12 +1,32 @@
+import argparse
 import sys
 import re
 from datetime import datetime
 
-path_src_conf = 'config/'+sys.argv[1]
-path_migration = 'config/migrations/'+sys.argv[2]
-path_dst_conf = 'config/'+sys.argv[3]
+parser = argparse.ArgumentParser(description='Manipulate Kconfig files. '
+    'Takes an upstream kernel configuration and applies a migration (changeset). '
+    'All file arguments must be present in their respective relative directories:'
+    'config/source/ - holds source configurations taken from eg. (source) packages '
+    'config/migrations/ - migration files, read the README.md in this directory '
+    'config/output/ - output directory for migrated configurations')
 
-dst_conf = open(path_dst_conf, "w+")
+parser.add_argument('-v', '--verbose', action='store_true')
+parser.add_argument('-n', '--nodiff', action='store_true')
+parser.add_argument('source_config', help='The source configuration to migrate. '
+    'The file given in this argument must be placed in config/source/')
+parser.add_argument('migration', help='The migration to apply to the source config. '
+    'Needs to be present in the relative config/migrations/ directory')
+parser.add_argument('dest_config', help='The filename of the destination config. '
+    'Will be written to config/output/.')
+
+args = vars(parser.parse_args())
+
+if args['verbose']: print(args)
+
+path_src_conf = 'config/source/{}'.format(args['source_config'])
+path_migration = 'config/migrations/{}'.format(args['migration'])
+path_output_dir = 'config/output/'
+path_dst_conf = '{}{}'.format(path_output_dir, args['dest_config'])
 
 """
 Miniclass to hold the diff information for a key
