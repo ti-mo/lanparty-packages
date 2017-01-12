@@ -106,7 +106,7 @@ def parse_migration(migration_cts):
 Get k/v pairs that need to be added to the output configuration
 :param migration: parsed migration dict
 :param migration_hits: dict containing the migration keys with bool values
-:return: a hash
+:return: a hash of migration keys that were not found in the source file
 """
 def get_additions(migration, migration_hits):
     # Get list of DiffActions that need to be added
@@ -211,13 +211,15 @@ with open(path_migration) as migration_file, \
     # configuration, its value is flipped to True
     migration_hits = {k: False for k in migration}
 
-    print('Migration:\n%s' % migration)
+    if args['verbose']: print('Migration:\n%s' % migration)
 
     changes = generate_changes(src_conf_cts, migration, migration_hits)
+    if args['verbose']: print('\nChanges:\n%s' % changes)
 
     # Determine lines that are to be added by comparing
     # the hit register against the migration
     additions = get_additions(migration, migration_hits)
+    if args['verbose']: print('\nMigration Hits:\n%s\n' % migration_hits)
 
     # Write additions (in the header)
     dst_conf_file.write(render_additions(additions))
