@@ -1,6 +1,7 @@
 import argparse
 import sys
 import re
+import os.path
 from datetime import datetime
 
 parser = argparse.ArgumentParser(description='Manipulate Kconfig files. '
@@ -171,6 +172,28 @@ def generate_changes(config, migration, migration_hits):
 
     return changes
 
+"""
+Print a list of changes to stdout
+:param changeset: the changeset to print
+:param mode: the character to append before every line
+:return: None
+"""
+def print_diff(changeset, mode):
+    for e in changeset:
+        print('{} {}'.format(mode, e))
+
+if not os.path.exists(path_src_conf):
+    print('Source configuration {} not found, exiting.'.format(path_src_conf))
+    sys.exit(1)
+
+if not os.path.exists(path_migration):
+    print('Migration {} not found, exiting.'.format(path_migration))
+    sys.exit(1)
+
+if not os.path.exists(path_output_dir):
+    print('{} not found, creating directory.'.format(path_output_dir))
+    os.mkdir(path_output_dir)
+
 with open(path_migration) as migration_file, \
      open(path_src_conf) as src_conf_file, \
      open(path_dst_conf, 'w') as dst_conf_file:
@@ -202,5 +225,8 @@ with open(path_migration) as migration_file, \
     # Write the body of the destination configuration
     dst_conf_file.write(render_changes(src_conf_cts, changes))
 
-    print('\nMigration Hits:\n%s' % migration_hits)
-    print('\nChanges:\n%s' % changes)
+    if not args['nodiff']:
+        print('Results:')
+        print_diff(additions, '+')
+        print()
+        print_diff({changes[x] for x in changes}, '~')
