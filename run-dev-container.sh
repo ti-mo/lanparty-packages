@@ -5,11 +5,16 @@ if [ -z $1 ]; then
   echo ""
   echo "  :: This script runs a container with the current directory mounted in /build."
   echo "  :: Also, port 80 is exposed on the host."
-  echo "  :: lanparty-packages:base is used as the image, make sure to run 'docker-compose build' first."
+  echo "  :: Make sure to run 'docker-compose build' first; the second argument is the"
+  echo "  :: tag of the lanparty-packages image to run (eg. kernel or base)"
   echo ""
-  echo "Usage: $0 <dev-container-name>"
+  echo "Usage: $0 dev-container-name [image-tag]"
   echo ""
   exit 1
+fi
+
+if [ -z $2 ]; then
+  2='base'
 fi
 
 dstatus=$(docker ps -a --format "{{.Names}} {{.Status}}")
@@ -27,9 +32,9 @@ if echo "$dstatus" | grep -q "^$1[[:space:]]"; then
   fi
 
 else
-  echo "Container $1 not found, creating.."
+  echo "Container $1 not found, creating from image tag $2.."
 
-  docker run -ti --name "$1" -v `pwd`:/build -p 80:80 lanparty-packages:base
+  docker run -ti --name "$1" -v `pwd`:/build -p 80:80 lanparty-packages:$2
 
   echo "Stopped container $1. Re-run script to resume."
 
