@@ -88,8 +88,8 @@ def parse_migration(migration_cts):
 
     # Duplicate migration entries will overwrite each other in order
     for entry in migration_cts.splitlines():
-        # Skip comments
-        if re.match('^\#', entry):
+        # Skip comments and empty lines
+        if re.match('^\#', entry) or not entry.split():
             continue
 
         k, v = entry.split('=', 1)
