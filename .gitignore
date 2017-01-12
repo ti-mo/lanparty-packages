@@ -3,6 +3,9 @@ cache/
 tmp-build/
 tmp-dest/
 
+# Config migration output
+**/config/output/
+
 # Source and golang pkg
 recipes/*/src
 recipes/*/pkg
