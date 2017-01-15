@@ -51,6 +51,13 @@ services:
     volumes:
       - .:/build
       - ./pkg:/pkg
+  oh-my-zsh:
+    image: lanparty-packages:base
+    working_dir: /build/recipes/oh-my-zsh
+    command: bash -c "apt-get update && fpm-cook clean && fpm-cook --pkg-dir /pkg"
+    volumes:
+      - .:/build
+      - ./pkg:/pkg
   php:
     image: lanparty-packages:base
     working_dir: /build/recipes/php5

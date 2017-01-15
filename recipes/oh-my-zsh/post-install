@@ -1,0 +1,18 @@
+#!/bin/sh
+set -e
+
+pkg=oh-my-zsh
+
+if [ "$1" = configure ] ; then
+  for f in zshrc
+  do
+    # Divert future installations to /etc/zsh/zshrc.diverted
+    dpkg-divert --add --package ${pkg} --rename --divert /etc/zsh/$f.diverted /etc/zsh/$f
+
+    # Symlink our version into the real path
+    [ ! -e /etc/zsh/$f -o -L /etc/zsh/$f ] && ln -sf /usr/share/oh-my-zsh/templates/$f /etc/zsh/$f
+  done
+fi
+
+#DEBHELPER#
+exit 0
