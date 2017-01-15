@@ -13,8 +13,10 @@ if [ -z $1 ]; then
   exit 1
 fi
 
-if [ -z $2 ]; then
-  2='base'
+tag=$2
+
+if [ -z $tag ]; then
+  tag='base'
 fi
 
 dstatus=$(docker ps -a --format "{{.Names}} {{.Status}}")
@@ -32,9 +34,9 @@ if echo "$dstatus" | grep -q "^$1[[:space:]]"; then
   fi
 
 else
-  echo "Container $1 not found, creating from image tag $2.."
+  echo "Container $1 not found, creating from image tag $tag.."
 
-  docker run -ti --name "$1" -v `pwd`:/build -p 80:80 lanparty-packages:$2
+  docker run -ti --name "$1" -v `pwd`:/build -p 80:80 lanparty-packages:$tag
 
   echo "Stopped container $1. Re-run script to resume."
 
