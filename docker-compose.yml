@@ -37,6 +37,13 @@ services:
     volumes:
       - .:/build
       - ./pkg:/pkg
+  cpupower:
+    image: lanparty-packages:base
+    working_dir: /build/recipes/cpupower-common
+    command: bash -c "apt-get update && fpm-cook clean && fpm-cook --pkg-dir /pkg"
+    volumes:
+      - .:/build
+      - ./pkg:/pkg
   nginx:
     image: lanparty-packages:base
     working_dir: /build/recipes/nginx
