@@ -35,7 +35,7 @@ class KernelCkTick < FPM::Cookery::Recipe
     patch "wireguard-patch-#{version}-#{revision}", 1
 
     # Copy ticking kernel config
-    FileUtils.cp datadir/"config-#{version}-#{revision}", sourcedir/".config"
+    FileUtils.cp datadir/"output/config-#{version}-#{revision}", sourcedir/".config"
 
     # Invoke kernel build
     sh 'make-kpkg clean'

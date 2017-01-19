@@ -1,5 +1,6 @@
 # Scheduler
 CONFIG_SCHED_MUQSS=y
+CONFIG_SMT_NICE=y
 
 # WireGuard
 CONFIG_WIREGUARD=y
@@ -8,6 +9,7 @@ CONFIG_WIREGUARD_DEBUG=n
 
 # Tick
 CONFIG_HZ_100=unset
+CONFIG_HZ_128=unset
 CONFIG_HZ_250=unset
 CONFIG_HZ_300=unset
 CONFIG_HZ_1000=y
@@ -18,6 +20,11 @@ CONFIG_HZ_PERIODIC=y
 CONFIG_NO_HZ_IDLE=unset
 CONFIG_NO_HZ_FULL=unset
 CONFIG_NO_HZ=unset
+
+# IO Schedulers
+CONFIG_IOSCHED_BFQ=y
+CONFIG_BFQ_GROUP_IOSCHED=n
+CONFIG_DEFAULT_BFQ=unset
 
 # Required to build custom kernel with one-time cert
 # https://lists.debian.org/debian-kernel/2016/04/msg00579.html
