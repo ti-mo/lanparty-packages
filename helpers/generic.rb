@@ -121,7 +121,7 @@ def extract_cache(pkg: @pkg)
 end
 
 # Pull a git repository and return its location on disk,
-# using cachedir/git-reponame as a convention.
+# using cachedir/reponame-git as a convention.
 # Additionally uses the @pkg variable to nest/group its download
 #
 # - url is the git url
@@ -134,7 +134,7 @@ def git(url: nil, branch: 'master', quiet: true, extract: false)
   end
 
   q = quiet ? '> /dev/null 2>&1' : ''
-  gitname = "git-#{url.split('/').last.split('.').first}"
+  gitname = "#{url.split('/').last.split('.').first}-git"
   gitcachedir = @pkg ? cachedir/@pkg/gitname : cachedir/gitname
 
   if not Dir.exist?(gitcachedir)
