@@ -85,7 +85,7 @@ def debuild(threads: 4, quiet: true, pkg: @pkg)
     log "Changing into detected extracted source directory #{builddir_pkg}"
     Dir.chdir builddir_pkg
   else
-    log "Could not determine extracted source directory for #{pkg}"
+    log "Could not determine extracted source directory for #{pkg} (searched #{builddir/pkg/"#{pkg}*/"}"
     exit
   end
 
