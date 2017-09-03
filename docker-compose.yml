@@ -81,6 +81,15 @@ services:
     volumes:
       - .:/build
       - ./pkg:/pkg
+  sniproxy:
+    image: lanparty-packages:base
+    working_dir: /build/recipes/sniproxy
+    environment:
+      - PKGDIR=/pkg
+    command: bash -c "apt-get update && rake clean && rake"
+    volumes:
+      - .:/build
+      - ./pkg:/pkg
   kernel-ck-tick:
     image: lanparty-packages:kernel
     working_dir: /build/recipes/kernel-ck

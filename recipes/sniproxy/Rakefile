@@ -1,0 +1,27 @@
+require '../../helpers/debian.rb'
+
+# Override pkgdir with an environment attribute
+@pkgdir = newpath(ENV['PKGDIR']) if ENV['PKGDIR']
+
+task :default => [:build_sniproxy] do
+  log "Successfully built sniproxy"
+end
+
+task :build_sniproxy do
+  debian_workon_pkg 'sniproxy'
+
+  apt_install pkg: ['dh-autoreconf', 'cdbs', 'libev-dev', 'libpcre3-dev', 'libudns-dev']
+
+  sniproxy_cachedir = git url: 'https://github.com/dlundquist/sniproxy.git', extract: true
+
+  debuild
+  debian_move
+end
+
+task :clean do
+  debian_cleanup
+end
+
+task :cleancache => :clean do
+  debian_cleanup cache: true
+end
