@@ -55,22 +55,9 @@ def debian_get_source(pkg: @pkg, tar_prefix: pkg, quiet: true)
     log "Found source archive at #{tarball}, skipping apt-get source"
   end
 
-  # Ensure builddir exists
-  builddir(pkg).mkdir
+  # Copy our cache directory to the build directory
+  return extract_cache
 
-  if not extractcookie?(pkg)
-    log "No extract cookie found for package #{pkg}, copying to " + builddir/pkg
-
-    # Copy source tree from cache to builddir
-    FileUtils.cp_r "#{cachedir/pkg}/.", builddir/pkg
-
-    set_extractcookie(pkg)
-  else
-    log "Extract cookie found at " + builddir/".extractcookie_#{pkg}" + ", skipping"
-  end
-
-  # Best effort to guess extracted source directory
-  return newpath(Dir.glob(builddir(pkg)/'*/').last)
 end
 
 # Executes debuild with the specified number of threads

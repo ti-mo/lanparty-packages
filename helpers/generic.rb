@@ -97,6 +97,29 @@ def shell(*args)
   return success
 end
 
+# Copy the pkg's cache directory to the temporary build directory.
+# Returns the last alphabetical directory in the build directory.
+#
+# - pkg (default @pkg) is the package name to search for in cachedir
+def extract_cache(pkg: @pkg)
+  # Ensure builddir exists
+  builddir(pkg).mkdir
+
+  if not extractcookie?(pkg)
+    log "No extract cookie found for package #{pkg}, copying to " + builddir/pkg
+
+    # Copy source tree from cache to builddir
+    FileUtils.cp_r "#{cachedir/pkg}/.", builddir/pkg
+
+    set_extractcookie(pkg)
+  else
+    log "Extract cookie found at " + builddir/".extractcookie_#{pkg}" + ", skipping"
+  end
+
+  # Best effort to guess extracted source directory
+  return newpath(Dir.glob(builddir(pkg)/'*/').last)
+end
+
 # Pull a git repository and return its location on disk,
 # using cachedir/git-reponame as a convention.
 # Additionally uses the @pkg variable to nest/group its download
@@ -104,7 +127,8 @@ end
 # - url is the git url
 # - branch (default 'master') is the branch to check out
 # - quiet (default true) squelches stderr/stdout
-def git(url: nil, branch: 'master', quiet: true)
+# - extract (default false) copies the git directory to the build cache
+def git(url: nil, branch: 'master', quiet: true, extract: false)
   if not url
     raise "url not given in git call"
   end
@@ -128,6 +152,10 @@ def git(url: nil, branch: 'master', quiet: true)
     log "Pulling branch '#{branch}'"
     shell %Q{git pull #{q}}
   }
+
+  if extract
+    return extract_cache
+  end
 
   return gitcachedir
 end
